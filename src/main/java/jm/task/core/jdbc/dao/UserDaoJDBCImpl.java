@@ -5,7 +5,9 @@ import jm.task.core.jdbc.util.Util;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,7 +41,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         try (Connection connection = db.connect(); 
              PreparedStatement statement = connection.prepareStatement("INSERT INTO Users VALUES(null, ?, ?, ?)")
-        ) {
+            ) {
             User user = new User(name, lastName, age);
             System.out.println(user.getAge());
             statement.setString(1, user.getName());
@@ -56,7 +58,23 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public List<User> getAllUsers() {
-        return null;
+        List<User> users = new ArrayList<>(); 
+        try (Connection connection = db.connect(); 
+             PreparedStatement statement = connection.prepareStatement("select * from " + db.getDBName())
+            ) {
+            ResultSet obj = statement.executeQuery();
+            while (obj.next()) {
+                User curUser = new User();
+                curUser.setId(obj.getLong(1));
+                curUser.setName(obj.getString(2));
+                curUser.setLastName(obj.getString(3));
+                curUser.setAge(obj.getByte(4));
+                users.add(curUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public void cleanUsersTable() {
