@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void saveUser(String name, String lastName, byte age) {
-
+        dataAccesObject.saveUser(name, lastName, age);
     }
 
     public void removeUserById(long id) {
