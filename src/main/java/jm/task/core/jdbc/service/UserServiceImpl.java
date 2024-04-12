@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void removeUserById(long id) {
-
+        dataAccesObject.removeUserById(id);
     }
 
     public List<User> getAllUsers() {
@@ -27,6 +27,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public void cleanUsersTable() {
-
+        dataAccesObject.cleanUsersTable();
     }
 }
