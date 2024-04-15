@@ -15,7 +15,7 @@ public class Main {
         userServiceImpl.saveUser("Alan", "Walker", (byte) 40);
         List<User> users = userServiceImpl.getAllUsers();
         for(User user: users) {
-            System.out.println(user.toString());
+            System.out.println(user);
         }
         userServiceImpl.cleanUsersTable();
         userServiceImpl.dropUsersTable();
