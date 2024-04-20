@@ -16,14 +16,12 @@ public class UserDaoHibernateImpl implements UserDao {
 
     }
 
-
     @Override
     public void createUsersTable() {
-        String sqlQuery = "CREATE TABLE IF NOT EXISTS Users(id BIGINT NOT NULL AUTO_INCREMENT, name NVARCHAR(255), lastName NVARCHAR(255), age TINYINT, PRIMARY KEY (id));";
         Transaction transaction = null;
         try (Session session = db.hibernateConnection().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery(sqlQuery).executeUpdate();
+            session.createSQLQuery(UserDaoHibernateImplEnum.CREATE_TABLE.getQuery()).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if(transaction != null ) { 
@@ -35,11 +33,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void dropUsersTable() {
-        String sqlQuery = "DROP TABLE IF EXISTS Users;";
         Transaction transaction = null;
         try (Session session = db.hibernateConnection().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery(sqlQuery).executeUpdate();
+            session.createSQLQuery(UserDaoHibernateImplEnum.DROP_TABLE.getQuery()).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if(transaction != null ) { 
@@ -86,7 +83,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try (Session session = db.hibernateConnection().openSession()) {
             transaction = session.beginTransaction();
-            users = session.createQuery("from User", User.class).list();
+            users = session.createQuery(UserDaoHibernateImplEnum.GET_ALL_FROM_TABLE.getQuery(), User.class).list();
             transaction.commit();
         } catch (Exception e) {
             if(transaction != null ) { 
@@ -99,11 +96,10 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public void cleanUsersTable() {
-        String sqlQuery = "DELETE FROM Users;";
         Transaction transaction = null;
         try (Session session = db.hibernateConnection().openSession()) {
             transaction = session.beginTransaction();
-            session.createSQLQuery(sqlQuery).executeUpdate();
+            session.createSQLQuery(UserDaoHibernateImplEnum.DELETE_ALL_FROM_TABLE.getQuery()).executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if(transaction != null ) { 
